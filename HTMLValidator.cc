@@ -33,60 +33,14 @@ std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameF
     
     CDocument doc;
     doc.parse(html);
-    // **TESTING** //
-    //std::cout << "\n\n\nBefore Node removal:\n" << doc.outer_text() << "\n\n\n";
-    //int i = doc.body->childNum() - 2;
-    //if (i < 0)
-    //{
-    //    i = 0;
-    //}
-    //CNode nodeToAddTo = doc.body->childAt(i).childAt(0); // use this when testing spaces with many children
-    //CNode nodeToAddTo = doc.body->childAt(0);       // use this when testing spaces with little/no children.
-    //CNode temp = doc.body->childAt(1);
-    //CNode find = nodeToAddTo;
-    //std::vector<CNode> removedNodes;
-    //removedNodes.push_back(temp);   // Would have to store node for removal before removing it, especially hcild nodes of head and body. Those would have to get made into CNodes then stored.
-    //remove(nodeToAddTo, html); // Will save the node in a variabe within this function, if not used again, the node will simply fall out of scope.
-    //remove_content(nodeToAddTo, html);
-    //unwrap(nodeToAddTo, html);
-    //remove_class(nodeToAddTo, "wrapper", html);
-    //replace_backround_image_url(nodeToAddTo, "newURL", html);
-    //replace_content(nodeToAddTo, html, removedNodes);
-    //std::cout << "\n\n\n" << html << "\n\n\n";
-    //std::cout << "\n\n\nAfter Node removal:\n" << doc.outer_text() << "\n\n\n";
-    //std::cout << "\n\n\nBefore Node addition:\n" << doc.outer_text() << "\n\n\n";
-    //auto iter = removedNodes.begin();
-    //for (int i = 0; i < removedNodes.size(); i++)
-    //{
-    //    if (removedNodes.at(i)->equals(&find))
-    //    {
-    //        CNode parent = removedNodes.at(i)->parent();
-    //        parent.append(removedNodes.at(i));
-    //        break;
-    //    }
-    //    iter++;
-    //}
-    //removedNodes.erase(iter); // Have to remove the node pointer that got appended from the "removedNodes" vector, since it is a member of the HTML Validator the data would persist.
-    //std::cout << "\n\n\nAfter Node addition:\n" << doc.outer_text() << "\n\n\n";
-    //std::cout << "\n\n\nBefore attribute addition\n" << doc.outer_text() << "\n\n\n";
-    ////nodeToAddTo = doc.body->childAt(i).childAt(0); // use this when testing spaces with many children
-    //nodeToAddTo = doc.body->childAt(i);     // use this when testing spaces with little/no children.
-    //nodeToAddTo.addAttri("itemscope", "");
-    //std::cout << "\n\n\nAfter attribute addition\n" << doc.outer_text() << "\n\n\n";
-    //std::cout << "\n\n\nBefore attribute deletion\n" << doc.outer_text() << "\n\n\n";   // Not working when gumbo calls gumbo_parser_deallocate() on the first modified attribute. // the deallocate function it calls is just an altered free().
-    //nodeToAddTo.removeAttri("style");
-    //std::cout << "\n\n\nAfter attribute deletion\n" << doc.outer_text() << "\n\n\n";
-    // **TESTING** //
 
     get_wrapper(doc, html, spaceNameFromURL);
     CNode wrapper = doc.body->childAt(0);
-    //doc.parse(html);
 
     // Unwrap all of the select outlines to remove them but not the element the wrap
     for (auto& tag : this->selectTags) {
         CSelection selectOutlineNodes = doc.find(tag);
         unwrap_all_instances(selectOutlineNodes, html);
-        //doc.parse(html);
     }
 
     // Remove the "selected" classes
@@ -94,7 +48,6 @@ std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameF
     for (int i = selectedNodes.length() -1; i >= 0; i--) {
         remove_class(selectedNodes.nodeAt(i), "selected", html);
     }
-    //doc.parse(html);
 
     // Clear the contents of the parchment-pages to only save one layer deep
     CSelection pageNodes = doc.find("#wrapper > parchment-page");
@@ -103,7 +56,6 @@ std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameF
     }
 
     // Replace image urls with url for blank-icon
-    //doc.parse(html);
     CSelection imageNodes = doc.find("image-icon");
     for (int i = imageNodes.length() - 1; i >= 0; i--) {
         replace_backround_image_url(imageNodes.nodeAt(i), "75820185/_res/fileIcons/blank-icon.svg", html);
@@ -111,7 +63,6 @@ std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameF
 
     // Remove all tool elements
     for (auto& tag : this->toolTags) {
-        //doc.parse(html);
         CSelection toolNodes = doc.find(tag);
         remove_all_instances(toolNodes, html);
     }
@@ -235,29 +186,6 @@ std::string HTMLValidator::get_element_contents(CNode node, std::string html) //
 void HTMLValidator::remove(CNode node, std::string& html)
 {
     node.removeNode();
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-
-    //size_t start;
-    //size_t sectionLength;
-    //if (node.startTagLeft() == node.endTagRight()) {
-    //    // Elements with no end tag
-    //    start = node.startTagLeft();
-    //    sectionLength = node.startTagRight() - node.startTagLeft();
-    //}
-    //else {
-    //    start = node.startTagLeft();
-    //    sectionLength = node.endTagRight() - node.startTagLeft();
-    //}
-    //
-    //html.erase(start, sectionLength);
-    //// These below while loops shouldn't be necessary since the node accessing won't deal with these newline characters. - Reece McDonald
-    //while (html[sectionLength] == '\n') {
-    //    html.erase(sectionLength, 1);
-    //}
-    //while (html[start] == '\n') {
-    //    html.erase(start, 1);
-    //}
 }
 
 void HTMLValidator::remove_all_instances(CSelection selection, std::string& html)
@@ -275,11 +203,6 @@ void HTMLValidator::remove_content(CNode node, std::string& html)
     {
         node.childAt(i).removeNode();
     }
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-    //size_t start = node.startTagRight();
-    //size_t length = node.endTagLeft() - node.startTagRight();
-    //html.erase(start, length);
 }
 
 // Replaces the content of an element with the newContent string
@@ -291,12 +214,6 @@ void HTMLValidator::replace_content(CNode node, std::string& html, std::vector<C
         CNode temp = newContent.at(i);
         node.append(&temp);
     }
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-    //size_t start = node.startTagRight();
-    //size_t length = node.endTagLeft() - node.startTagRight();
-    //std::string test = "hi";
-    //html.replace(start, length, test);
 }
 
 // Removes a class from an element in the html string
@@ -309,16 +226,6 @@ void HTMLValidator::remove_class(CNode node, std::string classname, std::string&
     else {
         std::cout << "failed to remove \'" << classname << "\' from " << "|" << get_element_string(node, html) << "|" << std::endl;
     }
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-    size_t classStart = html.find("class=", node.startTagLeft()) + 5;
-    size_t found = html.find(classname, classStart);
-    //if (found!=std::string::npos) {
-    //    html.erase(found, classname.length());
-    //}
-    //else {
-    //    std::cout << "failed to remove \'" << classname << "\' from " << "|" << get_element_string(node, html) << "|" << std::endl;
-    //}
 }
 
 void HTMLValidator::replace_backround_image_url(CNode node, std::string newUrl, std::string& html) 
@@ -337,27 +244,11 @@ void HTMLValidator::replace_backround_image_url(CNode node, std::string newUrl, 
     }
     tempVal.replace(urlStart, urlEnd - urlStart, newUrl);
     node.addAttri("style", tempVal);
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-
-    //size_t urlStart = html.find("url(&quot;", node.startTagLeft());
-    //if (urlStart == std::string::npos) {
-    //    std::cout << RED << "Failed to replace url for an image" << END << std::endl;
-    //    return;
-    //}
-    //urlStart += 10;
-    //size_t urlEnd = html.find("&quot;)", urlStart);
-    //if (urlEnd == std::string::npos) {
-    //    std::cout << RED << "Failed to replace url for an image" << END << std::endl;
-    //    return;
-    //}
-    //html.replace(urlStart, urlEnd - urlStart, newUrl);
 }
 
 // Removes the tags of an element in the html string, content remains intact
 void HTMLValidator::unwrap(CNode node, std::string& html)
 {
-    // unwrap nodes will keep children.
     CNode parent = node.parent();
     CNode container = parent.childAt(parent.childNum() - 1);
     container.removeNode();
@@ -370,20 +261,6 @@ void HTMLValidator::unwrap(CNode node, std::string& html)
     }
     node.removeNode();
     parent.append(&container);
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-
-    //Remove end tag
-    //html.erase(node.endTagLeft(), node.endTagRight() - node.endTagLeft());
-    //while (html[node.endTagLeft()] == '\n') {
-    //    html.erase(node.endTagLeft(), 1);
-    //}
-    //
-    //// Remove start tag
-    //html.erase(node.startTagLeft(), node.startTagRight() - node.startTagLeft());
-    //while (html[node.startTagLeft()] == '\n') {
-    //    html.erase(node.startTagLeft(), 1);
-    //}
     // Should eventually find a way to shift the elements back a level when printed
     // Tried removing \t's but it didn't seem to do anything, the formatting seems to be weird from the original HTML files
 }
@@ -398,12 +275,6 @@ void HTMLValidator::unwrap_all_instances(CSelection selection, std::string& html
 void HTMLValidator::add_attribute(CNode node, std::string& html, std::string attributeName, std::string attributeValue)
 {
     node.addAttri(attributeName, attributeValue);
-
-    // Old code is staying here in case any issues arise down the road. - Reece McDonald
-
-    //size_t tagEdge = html.find_first_of('>', node.startTagLeft());
-    //std::string attr = ' ' + attributeName + '=' + '"' + attributeValue + '"';
-    //html.insert(tagEdge, attr);
 }
 
 
