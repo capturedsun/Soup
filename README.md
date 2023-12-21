@@ -24,8 +24,14 @@ CNode.appendChild(CNode child)
 ...
 ```
 
+**Functions that need to be added:**
+```
+innerHTML()
+```
+
 ## How to Contribute
 We welcome any additions to the project via pull request. We ask that you thoroughly test your code beforehand. In your PR, make the title concise and relevant, and your description while we would prefer it not be too long, be descriptive of the changes or additions being made to the code. It will be reviewed and merged after review, so long as no issues were found.
+
 ## Credits
 ### Google 
 They provided the open-source [Gumbo library](https://github.com/google/gumbo-parser/tree/master) that we ue for parse tree generation.
