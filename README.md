@@ -17,8 +17,8 @@ They provided the open-source [Query library](https://github.com/lazytiger/gumbo
 We made the validator file, and made updates to the Query library for direct parse tree manipulation.
 Individual contributors from Captured Sun are as follows:
 
+Derek Wright: Wrote the original version of the Validator file.
+
 Reece McDonald: Worked on updating Validator and Query Library.
 
 Daniel Camejo: Worked on updating the Query Library.
-
-**TBC**
