@@ -27,8 +27,6 @@ int HTMLValidator::checkComplete(string html) {
 // The main method that cleans up HTML for the Parchment application
 std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameFromURL)
 {
-    std::cout << "HTML: \n" << html << "\n\n";
-
     if(checkComplete(html) < 0) return "";
     
     CDocument doc;
@@ -67,7 +65,10 @@ std::string HTMLValidator::cleanup_HTML(std::string html, std::string spaceNameF
         remove_all_instances(toolNodes, html);
     }
 
-    return wrapper.outerHTML();
+    //std::cout << wrapper.outerHTML() << "\n";
+    html = wrapper.outerHTML();
+
+    return html;
 }
 
 void HTMLValidator::getSpaceFiles(std::string& html,  std::vector<string>& folders, std::vector<string>& files) { // No change for move to node indexing. - Reece McDonald
