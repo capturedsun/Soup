@@ -6,8 +6,26 @@ To download and use Soup:
 1. Clone the repository to your machine.
 2. Move the Soup files into your project files.
 3. Use the appropriate include statement to use in your project. Exact wording of include statement may vary depending on the file structure of your project.
+
+## Use
+Example of usage:
+```
+string html = "<p id="horse"></p>"
+CDoc doc = new CDocument()
+doc.parse(html)
+CNode paragraph = doc.find("#horse")
+paragraph = doc.body.children.at(0)
+```
+Functions that are available for DOM manipulation:
+```
+parse()
+CNode.remove()
+CNode.appendChild(CNode child)
+...
+```
+
 ## How to Contribute
-If you wish to add onto this project, we ask that you thoroughly test your code before making a PR. In your PR, make the title concise and relevant, and your description while we would prefer it not be too long, be descriptive of the changes or additions being made to the code. It will be reviewed and merged after review, so long as no issues were found.
+We welcome any additions to the project via pull request. We ask that you thoroughly test your code beforehand. In your PR, make the title concise and relevant, and your description while we would prefer it not be too long, be descriptive of the changes or additions being made to the code. It will be reviewed and merged after review, so long as no issues were found.
 ## Credits
 ### Google 
 They provided the open-source [Gumbo library](https://github.com/google/gumbo-parser/tree/master) that we ue for parse tree generation.
