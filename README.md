@@ -1,6 +1,6 @@
 ![soup 1 (1)](https://github.com/capturedsun/Soup/assets/61888181/4014845c-3cdf-44d0-8854-0e6595179e0d)
 # Soup
-Soup is an open-source HTML parser and query language for C/C++. It leverages Google's Gumbo Parser and a wrapper library, Query, to make DOM manipulations to the Gumbo parse tree.
+Soup is an open-source HTML parser and query language for C/C++. It uses Google's Gumbo Parser and a wrapper library, Query, to make DOM manipulations to the Gumbo parse tree.
 ## Installation
 To download and use Soup:
 1. Clone the repository to your machine.
